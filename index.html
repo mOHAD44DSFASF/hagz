@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز موعد</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background-color 0.5s, color 0.5s;
+            background-color: var(--background-color);
+        }
+
+        .container {
+            background-color: var(--container-bg-color);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            transition: background-color 0.5s;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            width: 100%;
+            text-align: right;
+            transition: color 0.5s;
+        }
+
+        input, textarea, select {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.5s;
+        }
+
+        button {
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        .toggle-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        :root {
+            --primary-color: #0077b6;
+            --primary-hover-color: #005f99;
+            --container-bg-color: #fff;
+            --text-color: #000;
+            --background-color: #f0f8ff;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #90e0ef;
+            --primary-hover-color: #0077b6;
+            --container-bg-color: #333;
+            --text-color: #fff;
+            --background-color: #121212;
+        }
+
+    </style>
+</head>
+<body data-theme="light">
+    <div class="container fade-in">
+        <h1>حجز موعد للعيادة</h1>
+        <button class="toggle-btn" id="toggle-theme">تبديل إلى الوضع المعتم</button>
+        <form id="appointment-form">
+            <label for="name">الاسم الكامل:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">البريد الإلكتروني:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="phone">رقم الهاتف:</label>
+            <input type="tel" id="phone" name="phone" required>
+            
+            <label for="date">تاريخ الموعد:</label>
+            <input type="date" id="date" name="date" required>
+            
+            <label for="time">وقت الموعد:</label>
+            <input type="time" id="time" name="time" required>
+
+            <label for="disease">نوع المرض:</label>
+            <select id="disease" name="disease" required>
+                <option value="general">عام</option>
+                <option value="cardiology">قلب</option>
+                <option value="dermatology">جلدية</option>
+                <option value="neurology">عصبية</option>
+                <option value="orthopedics">عظام</option>
+            </select>
+            
+            <label for="message">رسالة:</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+            
+            <button type="submit">إرسال</button>
+        </form>
+    </div>
+    <script>
+                document.getElementById('appointment-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const disease = document.getElementById('disease').value;
+            const message = document.getElementById('message').value;
+
+            const mailtoLink = `mailto:your-email@example.com?subject=حجز موعد&body=الاسم: ${name}%0Aالبريد الإلكتروني: ${email}%0Aرقم الهاتف: ${phone}%0Aتاريخ الموعد: ${date}%0Aوقت الموعد: ${time}%0Aنوع المرض: ${disease}%0Aرسالة: ${message}`;
+            
+            // إرسال البريد
+            window.location.href = mailtoLink;
+
+            // عرض رسالة تأكيد
+            alert('تم حجز موعدك بنجاح!');
+        });
+
+               const toggleBtn = document.getElementById('toggle-theme');
+        const body = document.body;
+        toggleBtn.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'light') {
+                body.setAttribute('data-theme', 'dark');
+                toggleBtn.textContent = 'تبديل إلى الوضع المضيء';
+            } else {
+                body.setAttribute('data-theme', 'light');
+                toggleBtn.textContent = 'تبديل إلى الوضع المعتم';
+            }
+            // تغيير لون خلفية النموذج بناءً على الوضع المعتم أو المضيء
+            const container = document.querySelector('.container');
+            const currentTheme = body.getAttribute('data-theme');
+            container.style.setProperty('--container-bg-color', currentTheme === 'light' ? '#fff' : '#333');
+        });
+
+    </script>
+</body>
+</html>
